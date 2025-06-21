@@ -34,6 +34,14 @@ void admin_mode() {
         }
     }
 }
+void load_questions(){
+
+}
+
+void load_user(){
+
+}
+
 //문제가 저장된 파일 열어보기
 void load_pending_questions() {
     FILE *fp = fopen("pending_questions.txt", "r");
