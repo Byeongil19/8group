@@ -25,4 +25,7 @@ int getAvailableQuizFiles(char fileList[][50], int maxFiles);
 // 카테고리명으로 파일명을 반환하는 함수
 int getCategoryFilename(const char* category, char* filename);
 
+// 퀴즈 랜덤으로 출력
+void shuffleQuestions(QuizQuestion* questions, int count);
+
 #endif // FILE_MANAGER_H

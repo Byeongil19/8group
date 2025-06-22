@@ -14,9 +14,6 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
-#ifdef _WIN32
-#include <windows.h>
-#endif
 
 void getLine(char* buffer, int size) {
     fgets(buffer, size, stdin);
@@ -24,7 +21,7 @@ void getLine(char* buffer, int size) {
 }
 
 int main() {
-    #ifdef _WIN32
+#ifdef _WIN32
 #include <windows.h>
 #endif
 
@@ -33,7 +30,7 @@ int main() {
     SetConsoleCP(CP_UTF8);       // 입력 인코딩도 UTF-8로 설정
     #endif
     int mode;
-    printf("=== 넌센스 퀴즈 게임 ===\n\n");
+    printf("=== 넌센스 퀴즈 게임 ===\n");
     printf("1. 퀴즈 풀기 (텍스트 기반)\n");
     printf("2. 관리자 모드\n");
     printf("3. 제한시간 객관식 퀴즈\n");
@@ -61,7 +58,6 @@ int main() {
 
         printf("당신의 이름을 입력하세요: ");
         getLine(playerName, sizeof(playerName));
-
         printf("\n[사용 가능한 카테고리 목록]\n");
         fileCount = getAvailableQuizFiles(fileList, 10);
         for (int i = 0; i < fileCount; i++) {
@@ -91,6 +87,7 @@ int main() {
             return 1;
         }
 
+        shuffleQuestions(questions, quizCount);
         printf("\n총 %d문제를 불러왔습니다. 퀴즈를 시작합니다!\n", quizCount);
 
         time_t startTime = time(NULL);

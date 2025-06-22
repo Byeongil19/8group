@@ -249,3 +249,16 @@ int getCategoryFilename(const char* category, char* filename) {
 
     return 0;
 }
+
+void shuffleQuestions(QuizQuestion* questions, int count) {
+    srand((unsigned int)time(NULL));  // 시드 설정
+
+    for (int i = count - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        
+        // Swap
+        QuizQuestion temp = questions[i];
+        questions[i] = questions[j];
+        questions[j] = temp;
+    }
+}
