@@ -209,9 +209,9 @@ void displayResultsByCategory(const char* category, int maxResults) {
 
 int getAvailableQuizFiles(char fileList[][50], int maxFiles) {
     const char* quizFiles[] = {
-        "data/quiz_joke.txt",
-        "data/quiz_science.txt",
-        "data/quiz_history.txt"
+        "quiz_joke.txt",
+        "quiz_science.txt",
+        "quiz_history.txt"
     };
 
     const char* categories[] = {
@@ -235,15 +235,15 @@ int getAvailableQuizFiles(char fileList[][50], int maxFiles) {
 
 int getCategoryFilename(const char* category, char* filename) {
     if (strcmp(category, "개그") == 0) {
-        strcpy(filename, "data/quiz_joke.txt");
+        strcpy(filename, "quiz_joke.txt");
         return 1;
     }
     else if (strcmp(category, "과학") == 0) {
-        strcpy(filename, "data/quiz_science.txt");
+        strcpy(filename, "quiz_science.txt");
         return 1;
     }
     else if (strcmp(category, "역사") == 0) {
-        strcpy(filename, "data/quiz_history.txt");
+        strcpy(filename, "quiz_history.txt");
         return 1;
     }
 
