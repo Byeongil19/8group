@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
+#include <conio.h>
 
 typedef struct Quiz_ {
     char question[256];
@@ -13,24 +14,49 @@ typedef struct Quiz_ {
 
 int totalScore = 0;
 
+int timeout_60s(char* userAnswer) {
+    const int timeoutSec = 60;
+    time_t startTime = time(NULL);
+    while (1) {
+        if (kbhit()) {
+            char ch = getch();
+            if (ch != '\r' && ch != '\n') {
+                *userAnswer = ch;
+                return 1;
+            }
+        }
+        if (difftime(time(NULL), startTime) >= timeoutSec) {
+            return 0;
+        }
+    }
+}
+
+
 void runQuiz(Quiz* head) {
     Quiz* current = head;
+    totalScore = 0;
     while (current != NULL) {
         printf("%s\n", current->question);
-        printf("정답 입력: ");
-        scanf(" %c", &current->useranswer);
+        printf("정답 입력 (60초 이내): ");
 
-        if (toupper(current->useranswer) == toupper(current->answer)) {
-            printf("정답입니다!\n");
-            current->score = 10;
-            totalScore += 10;
+        if (!timeout_60s(&current->useranswer)) {
+            printf("\n시간 초과! 답변이 입력되지 않았습니다.\n");
+            current->score = 0;
         } else {
-            printf("틀렸습니다. 정답은 %c 입니다.\n", current->answer);
+            if (toupper(current->useranswer) == toupper(current->answer)) {
+                printf("정답입니다!\n");
+                current->score = 10;
+                totalScore += 10;
+            } else {
+                printf("틀렸습니다. 정답은 %c 입니다.\n", current->answer);
+                current->score = 0;
+            }
         }
 
         current = current->next;
         printf("\n");
     }
+    printf("퀴즈 종료! 총 점수는 %d점 입니다.\n", totalScore);
 }
 
 void shuffleLinkedList(Quiz** head, int n) {
