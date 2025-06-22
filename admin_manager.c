@@ -6,8 +6,6 @@
 void load_pending_questions();
 void approve_or_reject_questions();
 void edit_or_delete_questions();
-void manage_users(); // 아직 기본 구조만 제공
-
 
 void approve_or_reject_questions() {
     FILE *in = fopen("pending_questions.txt", "r");
@@ -74,9 +72,6 @@ void approve_or_reject_questions() {
     printf("\n모든 제안 문제 처리가 완료되었습니다.\n");
 }
 
-
-
-
 // 관리자 모드 메뉴
 void admin_mode() {
     int choice;
@@ -86,7 +81,6 @@ void admin_mode() {
         printf("1. 제안된 문제 확인\n");
         printf("2. 문제 승인 / 거절\n");
         printf("3. 기존 문제 수정 / 삭제\n");
-        printf("4. 플레이어 유저 관리\n");
         printf("0. 종료\n");
         printf("항목을 선택해 주세요: ");
         scanf("%d", &choice);
@@ -100,9 +94,6 @@ void admin_mode() {
                 break;
             case 3:
                 edit_or_delete_questions();
-                break;
-            case 4:
-                manage_users();
                 break;
             case 0:
                 printf("관리자 모드를 종료합니다.\n");
@@ -185,9 +176,4 @@ void edit_or_delete_questions() {
     }
     fclose(out);
     printf("변경사항이 저장되었습니다.\n");
-}
-
-// 4) 유저 관리 (기본 구조)
-void manage_users() {
-    printf("\n[유저 관리 기능은 아직 구현되지 않았습니다.]\n");
 }
