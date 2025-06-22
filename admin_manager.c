@@ -8,6 +8,75 @@ void approve_or_reject_questions();
 void edit_or_delete_questions();
 void manage_users(); // 아직 기본 구조만 제공
 
+
+void approve_or_reject_questions() {
+    FILE *in = fopen("pending_questions.txt", "r");
+    FILE *temp = fopen("temp.txt", "w");
+
+    if (!in || !temp) {
+        printf("파일 열기에 실패했습니다.\n");
+        return;
+    }
+
+    char line[MAX_LINE];
+    int count = 1;
+
+    while (fgets(line, sizeof(line), in)) {
+        // 한 줄 파싱: category|question|answer
+        char category[50], question[256], answer[100];
+        char* token = strtok(line, "|");
+        if (token) strcpy(category, token);
+        token = strtok(NULL, "|");
+        if (token) strcpy(question, token);
+        token = strtok(NULL, "\n");
+        if (token) strcpy(answer, token);
+
+        // 출력
+        printf("\n문제 %d:\n카테고리: %s\n질문: %s\n정답: %s\n", count++, category, question, answer);
+        printf("이 문제를 승인하시겠습니까? (y/n): ");
+        char ch;
+        getchar();  // 이전 개행 제거
+        scanf("%c", &ch);
+
+        if (ch == 'y' || ch == 'Y') {
+            // 퀴즈 파일명 결정
+            char filename[100];
+            if (strcmp(category, "개그") == 0)
+                strcpy(filename, "quiz_joke.txt");
+            else if (strcmp(category, "과학") == 0)
+                strcpy(filename, "quiz_science.txt");
+            else if (strcmp(category, "역사") == 0)
+                strcpy(filename, "quiz_history.txt");
+            else {
+                printf("⚠️ 유효하지 않은 카테고리입니다. 이 문제는 저장되지 않습니다.\n");
+                continue;
+            }
+
+            // 실제 퀴즈 문제로 저장
+            FILE* quiz_file = fopen(filename, "a");
+            if (quiz_file) {
+                fprintf(quiz_file, "\n%s | %s", question, answer);  // ← 퀴즈 출제용 형식
+                fclose(quiz_file);
+                printf("✅ 승인 완료: %s에 저장됨\n", filename);
+            } else {
+                printf("❌ 파일 저장 실패: %s\n", filename);
+            }
+        } else {
+            fprintf(temp, "%s|%s|%s\n", category, question, answer); // 다시 보류
+        }
+    }
+
+    fclose(in);
+    fclose(temp);
+    remove("pending_questions.txt");
+    rename("temp.txt", "pending_questions.txt");
+
+    printf("\n모든 제안 문제 처리가 완료되었습니다.\n");
+}
+
+
+
+
 // 관리자 모드 메뉴
 void admin_mode() {
     int choice;
@@ -65,41 +134,6 @@ void load_pending_questions() {
     }
 
     fclose(fp);
-}
-// 2) 승인/거절
-void approve_or_reject_questions() {
-    FILE *in = fopen("pending_questions.txt", "r");
-    FILE *temp = fopen("temp.txt", "w");
-    FILE *approved = fopen("questions.txt", "a");
-
-    if (!in || !temp || !approved) {
-        printf("파일 열기에 실패했습니다.\n");
-        return;
-    }
-
-    char line[MAX_LINE];
-    int count = 1;
-    while (fgets(line, sizeof(line), in)) {
-        printf("\n문제 %d: %s", count++, line);
-        printf("이 문제를 승인하시겠습니까? (y/n): ");
-        char ch;
-        getchar(); // 개행 제거
-        scanf("%c", &ch);
-        if (ch == 'y' || ch == 'Y') {
-            fputs(line, approved);  // 승인 → questions.txt로
-        } else {
-            fputs(line, temp);      // 거절 → 임시로 유지
-        }
-    }
-
-    fclose(in);
-    fclose(temp);
-    fclose(approved);
-
-    remove("pending_questions.txt");
-    rename("temp.txt", "pending_questions.txt");
-
-    printf("\n처리가 완료되었습니다.\n");
 }
 
 // 3) 기존 문제 수정 및 삭제

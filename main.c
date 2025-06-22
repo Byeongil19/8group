@@ -6,7 +6,7 @@
 #include "quiz_game.h"
 #include "file_manager.h"
 #include "admin.h"
-#include "quiz_engine.h"  // 추가
+#include "quiz_engine.h"
 
 #define MAX_QUESTIONS 100
 #define MAX_NAME_LEN 50
@@ -20,20 +20,46 @@ void getLine(char* buffer, int size) {
     buffer[strcspn(buffer, "\n")] = '\0';
 }
 
+// ✅ 문제 제안 함수
+void suggest_question() {
+    char category[50];
+    char question[256];
+    char answer[100];
+
+    FILE* fp = fopen("pending_questions.txt", "a");
+    if (!fp) {
+        printf("파일을 열 수 없습니다.\n");
+        return;
+    }
+
+    printf("\n--- 문제 제안 ---\n");
+    printf("카테고리를 선택하세요 (개그 / 과학 / 역사): ");
+    getLine(category, sizeof(category));
+
+    printf("문제를 입력하세요: ");
+    getLine(question, sizeof(question));
+
+    printf("정답을 입력하세요: ");
+    getLine(answer, sizeof(answer));
+
+    fprintf(fp, "%s|%s|%s\n", category, question, answer);
+    fclose(fp);
+
+    printf("문제가 성공적으로 제안되었습니다!\n");
+}
+
 int main() {
 #ifdef _WIN32
-#include <windows.h>
-#endif
-
-    #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8); // 출력 인코딩을 UTF-8로 설정
     SetConsoleCP(CP_UTF8);       // 입력 인코딩도 UTF-8로 설정
-    #endif
+#endif
+
     int mode;
     printf("=== 넌센스 퀴즈 게임 ===\n");
     printf("1. 퀴즈 풀기 (텍스트 기반)\n");
     printf("2. 관리자 모드\n");
     printf("3. 제한시간 객관식 퀴즈\n");
+    printf("4. 퀴즈 문제 제안하기\n");  // ✅ 추가
     printf("0. 종료\n");
     printf("모드를 선택하세요: ");
     scanf("%d", &mode);
@@ -44,7 +70,11 @@ int main() {
         return 0;
     }
     else if (mode == 2) {
-        admin_mode(); 
+        admin_mode();
+        return 0;
+    }
+    else if (mode == 4) {
+        suggest_question();  // ✅ 문제 제안 실행
         return 0;
     }
     else if (mode == 1) {
@@ -130,7 +160,6 @@ int main() {
         Quiz* head = NULL;
         Quiz* current = NULL;
 
-        // 하드코딩 예제 문제들
         const char* questions[] = {
             "1. C 언어에서 'int'는 어떤 자료형인가요?\nA) 정수 B) 실수 C) 문자 D) 포인터",
             "2. 대한민국의 수도는 어디인가요?\nA) 부산 B) 대전 C) 서울 D) 인천",
@@ -157,7 +186,6 @@ int main() {
         shuffleLinkedList(&head, 3);
         runQuiz(head);
 
-        // 메모리 해제
         while (head != NULL) {
             Quiz* temp = head;
             head = head->next;
