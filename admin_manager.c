@@ -1,6 +1,13 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+//관리자 권한 실행
+=======
+//유저가 추가할려는 문제가 있을 때 그 문제들만 저장할 수 있는 txt파일 만들기.
+=======
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+>>>>>>> 314139a147ac0a191c4291430014c223bb18791d
 
 #define MAX_LINE 256
 
@@ -67,6 +74,9 @@ void load_pending_questions() {
 
     fclose(fp);
 }
+<<<<<<< HEAD
+>>>>>>> 90fe53f279e2765c0d279170867ae7721065a277
+=======
 
 // 2) 승인/거절
 void approve_or_reject_questions() {
@@ -159,3 +169,4 @@ void edit_or_delete_questions() {
 void manage_users() {
     printf("\n[유저 관리 기능은 아직 구현되지 않았습니다.]\n");
 }
+>>>>>>> 314139a147ac0a191c4291430014c223bb18791d
