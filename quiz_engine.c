@@ -20,10 +20,11 @@ int timeout_60s(char* userAnswer) {
     while (1) {
         if (kbhit()) {
             char ch = getch();
-            if (ch != '\r' && ch != '\n') {
-                *userAnswer = ch;
+            if (ch == '\r' || ch == '\n') {
+                continue;
+            }               
+            *userAnswer = ch;
                 return 1;
-            }
         }
         if (difftime(time(NULL), startTime) >= timeoutSec) {
             return 0;
@@ -52,7 +53,7 @@ void runQuiz(Quiz* head) {
                 current->score = 0;
             }
         }
-
+        
         current = current->next;
         printf("\n");
     }
