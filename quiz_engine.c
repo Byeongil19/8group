@@ -13,7 +13,6 @@ typedef struct Quiz_ {
 } Quiz;
 
 int totalScore = 0;
-
 int timeout_60s(char* userAnswer) {
     const int timeoutSec = 60;
     time_t startTime = time(NULL);
@@ -31,17 +30,14 @@ int timeout_60s(char* userAnswer) {
         }
     }
 }
-
-
 void runQuiz(Quiz* head) {
     Quiz* current = head;
     totalScore = 0;
     while (current != NULL) {
         printf("%s\n", current->question);
-        printf("정답 입력 (60초 이내): ");
-
+        printf("60초 내로 정답을 입력해주세요: ");
         if (!timeout_60s(&current->useranswer)) {
-            printf("\n시간 초과! 답변이 입력되지 않았습니다.\n");
+            printf("\n시간이 초과되었습니다.\n");
             current->score = 0;
         } else {
             if (toupper(current->useranswer) == toupper(current->answer)) {
@@ -49,21 +45,18 @@ void runQuiz(Quiz* head) {
                 current->score = 10;
                 totalScore += 10;
             } else {
-                printf("틀렸습니다. 정답은 %c 입니다.\n", current->answer);
+                printf("오답입니다. 정답은 %c 입니다.\n", current->answer);
                 current->score = 0;
             }
         }
-        
         current = current->next;
         printf("\n");
     }
     printf("퀴즈 종료! 총 점수는 %d점 입니다.\n", totalScore);
 }
-
 void shuffleLinkedList(Quiz** head, int n) {
     Quiz* arr[n];
     Quiz* current = *head;
-
     for (int i = 0; i < n; i++) {
         arr[i] = current;
         current = current->next;
