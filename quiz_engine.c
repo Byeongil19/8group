@@ -1,5 +1,7 @@
 #include <stdio.h>
-#include <ctype.h> 
+#include <stdlib.h>
+#include <ctype.h>
+#include <time.h>
 
 typedef struct Quiz_ {
     char question[256];
@@ -30,13 +32,15 @@ void runQuiz(Quiz* head) {
         printf("\n");
     }
 }
-void listToShuffledArray(Quiz* head, Quiz** arr, int n) {
-    Quiz* current = head;
+
+void shuffleLinkedList(Quiz** head, int n) {
+    Quiz* arr[n];
+    Quiz* current = *head;
+
     for (int i = 0; i < n; i++) {
         arr[i] = current;
         current = current->next;
     }
-
     srand((unsigned int)time(NULL));
     for (int i = n - 1; i > 0; i--) {
         int j = rand() % (i + 1);
@@ -44,4 +48,9 @@ void listToShuffledArray(Quiz* head, Quiz** arr, int n) {
         arr[i] = arr[j];
         arr[j] = temp;
     }
-} 
+    for (int i = 0; i < n - 1; i++) {
+        arr[i]->next = arr[i + 1];
+    }
+    arr[n - 1]->next = NULL;
+    *head = arr[0];
+}
