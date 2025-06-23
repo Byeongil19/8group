@@ -149,9 +149,9 @@ int main() {
             Quiz* head = NULL;
             Quiz* current = NULL;
             const char* questions[] = {
-                "1. C 언어에서 'int'는 어떤 자료형인가요?\nA) 정수 B) 실수 C) 문자 D) 포인터",
-                "2. 대한민국의 수도는 어디인가요?\nA) 부산 B) 대전 C) 서울 D) 인천",
-                "3. 바다에서 가장 짠 바다는?\nA) 발트해 B) 홍해 C) 지중해 D) 동해"
+                "C 언어에서 'int'는 어떤 자료형인가요?\nA) 정수 B) 실수 C) 문자 D) 포인터",
+                "대한민국의 수도는 어디인가요?\nA) 부산 B) 대전 C) 서울 D) 인천",
+                "바다에서 가장 짠 바다는?\nA) 발트해 B) 홍해 C) 지중해 D) 동해"
             };
             const char answers[] = { 'A', 'C', 'B' };
 

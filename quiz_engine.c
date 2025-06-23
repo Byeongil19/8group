@@ -33,8 +33,9 @@ int timeout_60s(char* userAnswer) {
 void runQuiz(Quiz* head) {
     Quiz* current = head;
     totalScore = 0;
+    int questionNumber = 1;
     while (current != NULL) {
-        printf("%s\n", current->question);
+        printf("Q%d. %s\n", questionNumber, current->question);
         printf("60초 내로 정답을 입력해주세요: ");
         if (!timeout_60s(&current->useranswer)) {
             printf("\n시간이 초과되었습니다.\n");
@@ -50,6 +51,7 @@ void runQuiz(Quiz* head) {
             }
         }
         current = current->next;
+        questionNumber++;
         printf("\n");
     }
     printf("퀴즈 종료! 총 점수는 %d점 입니다.\n", totalScore);

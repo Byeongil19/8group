@@ -64,7 +64,6 @@ void admin_mode() {
         printf("\n====== 관리자 모드 ======\n");
         printf("1. 제안된 문제 확인\n");
         printf("2. 문제 승인 / 거절\n");
-        printf("3. 기존 문제 수정 / 삭제\n");
         printf("0. 종료\n");
         printf("항목을 선택해 주세요: ");
         scanf("%d", &choice);
@@ -74,9 +73,6 @@ void admin_mode() {
                 break;
             case 2:
                 approve_or_reject_questions();
-                break;
-            case 3:
-                edit_or_delete_questions();
                 break;
             case 0:
                 printf("관리자 모드를 종료합니다.\n");
@@ -102,45 +98,4 @@ void load_pending_questions() {
         printf("현재 제안된 문제가 없습니다.\n");
     }
     fclose(fp);
-}
-void edit_or_delete_questions() {
-    FILE *in = fopen("questions.txt", "r");
-    if (!in) {
-        printf("기존 문제 파일이 없습니다.\n");
-        return;
-    }
-    char questions[100][MAX_LINE];
-    int count = 0;
-    while (fgets(questions[count], MAX_LINE, in)) {
-        printf("%d) %s", count + 1, questions[count]);
-        count++;
-    }
-    fclose(in);
-    if (count == 0) {
-        printf("문제가 없습니다.\n");
-        return;
-    }
-    int select;
-    printf("수정/삭제할 문제 번호를 입력하세요 (0: 취소): ");
-    scanf("%d", &select);
-    if (select == 0 || select > count) return;
-    printf("1: 수정, 2: 삭제 선택: ");
-    int act;
-    scanf("%d", &act);
-    getchar();
-    if (act == 1) {
-        printf("새로운 문제를 입력하세요: ");
-        fgets(questions[select - 1], MAX_LINE, stdin);
-    } else if (act == 2) {
-        for (int i = select - 1; i < count - 1; i++) {
-            strcpy(questions[i], questions[i + 1]);
-        }
-        count--;
-    }
-    FILE *out = fopen("questions.txt", "w");
-    for (int i = 0; i < count; i++) {
-        fputs(questions[i], out);
-    }
-    fclose(out);
-    printf("변경사항이 저장되었습니다.\n");
 }
